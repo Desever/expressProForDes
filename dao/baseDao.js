@@ -16,7 +16,6 @@ var baseDao={
                 //数据库操作结束
                 //关闭mongodb
                 close();
-                
                 if (err) {
                     resolve({
                         state:0,
@@ -42,27 +41,119 @@ var baseDao={
      * @returns {Promise}
      */
     remove(model,condition){
-        model.remove(condition,(err, res)=>{
-            
-            //数据库操作结束
-            //关闭mongodb
-            close();
 
-            if (err) {
-                resolve({
-                    state:0,
-                    msg:err,
-                    data:null
+        return new Promise((resolve, reject) => {
+            model.remove(condition,(err, res)=>{
+                //数据库操作结束
+                //关闭mongodb
+                close();
+                if (err) {
+                    resolve({
+                        state:0,
+                        msg:err,
+                        data:null
+                    })
+                }
+                else {
+                    resolve({
+                        state:1,
+                        msg:"成功",
+                        data:null
+                    })
+                }
+            });
+        })
+
+        
+    },
+    /**
+     * 修改单条数据
+     * @param model mongoose model
+     * @param condition 修改条件
+     * @returns {Promise} 返回更新以后的数据
+     */
+    update:function(model,condition,changeData){
+        
+        return new Promise((resolve, reject) => {
+            //multi为true允许更新多条查询记录。
+            model.update(condition,changeData, {multi: true}, function(err, res){
+                //数据库操作结束
+                //关闭mongodb
+                close();
+                if (err) {
+                    resolve({
+                        state:0,
+                        msg:err,
+                        data:null
+                    })
+                }
+                else {
+                    resolve({
+                        state:1,
+                        msg:"成功",
+                        data:res
+                    })
+                }
+
+            })
+        })
+
+        
+    },
+
+    /**
+     * 修改单条数据
+     * @param model mongoose model
+     * @param condition 查询条件
+     * @param resolveData 返回数据的字段显示{title:"a"}
+     * @returns {Promise} 返回查询数据
+     */
+    find(model,condition,resolveData){
+        
+        return new Promise((resolve, reject) => {
+            if(resolveData){
+                model.find(condition,resolveData, function(err, res){
+                    //数据库操作结束
+                    //关闭mongodb
+                    close();
+                    if (err) {
+                        resolve({
+                            state:0,
+                            msg:err,
+                            data:null
+                        })
+                    }
+                    else {
+                        resolve({
+                            state:1,
+                            msg:"成功",
+                            data:res
+                        })
+                    }
+                })
+            }else{
+                model.find(condition,resolveData, function(err, res){
+                    //数据库操作结束
+                    //关闭mongodb
+                    close();
+                    if (err) {
+                        resolve({
+                            state:0,
+                            msg:err,
+                            data:null
+                        })
+                    }
+                    else {
+                        resolve({
+                            state:1,
+                            msg:"成功",
+                            data:res
+                        })
+                    }
                 })
             }
-            else {
-                resolve({
-                    state:1,
-                    msg:"成功",
-                    data:null
-                })
-            }
-        });
+        })
+        
     }
     
 }

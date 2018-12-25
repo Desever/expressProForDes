@@ -24,4 +24,4 @@ var UserSchema = new Schema({
 },{ collection: 'webUser'});
 
 //导出数据
-module.exports = mongoose.model('User',UserSchema);
+module.exports = mongoose.model('UserModel',UserSchema);

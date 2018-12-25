@@ -1,20 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-//用户信息model
-var User = require("../../model/user/user");
-//引入dao层
-var baseDao=require("../../dao/baseDao");
-
+//用户类
+var userClass=require("./class/user.class").userClass;
+var userClassObject=new userClass();
 
 //后台用户登录操作
 router.get('/login', function(req, routerRes, next) {
-    baseDao.create(User,{
-        username:"123123"
-    });
-    routerRes.send({
-        msg:"123123"
-    })
+    //调用登录方法
+    userClassObject.login(routerRes);
 });
 
 //后台用户退出登录操作
@@ -22,7 +16,7 @@ router.get('/loginout', function(req, routerRes, next) {
 
 });
 
-//后台用户充值密码
+//后台用重置密码
 router.get('/changepass', function(req, routerRes, next) {
 
 });
